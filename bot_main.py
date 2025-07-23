@@ -23,12 +23,12 @@ def main(message):
 def main(message):
     bot.send_message(message.chat.id, message)
 
-@bot.message_handler()
-def info(message):
-    if message.text.lower() == 'id':
-        bot.reply_to(message, f'ID = {message.from_user.id}')
-    elif message.text.lower() == 'время':
-        bot.reply_to(message, f'время = {time}')
+# @bot.message_handler()
+# def info(message):
+#     if message.text.lower() == 'id':
+#         bot.reply_to(message, f'ID = {message.from_user.id}')
+#     elif message.text.lower() == 'время':
+#         bot.reply_to(message, f'время = {time}')
 
 @bot.callback_query_handler(func=lambda call: call.data == 'choose_timezone')
 def callback_timezone(call):
