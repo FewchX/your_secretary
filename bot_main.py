@@ -4,9 +4,7 @@ import datetime
 import pytz
 from db import db_sqlite
 
-#testrt
-
-bot = telebot.TeleBot('8007211189:AAHJ0Ae9QufEAgZOlvTdycMjwSzhqLs5rTw')
+bot = telebot.TeleBot('BOT_ID')
 
 time = 0
 
@@ -19,12 +17,43 @@ def main(message):
 
     bot.send_message(message.chat.id, f'Здравствуйте, {message.from_user.first_name}! Давайте начнём наше общение с настройки. Укажите свой временной пояс, для того, чтобы я могла ориентироваться в вашем списке дел!', reply_markup=markup)
 
+@bot.message_handler(commands=['create_task'])
+def create_task(message):
+    bot.send_message(message.chat.id, "Введите название задачи:")
+    bot.register_next_step_handler(message, process_task_title)
+def process_task_title(message):
+    title = message.text
+    bot.send_message(message.chat.id, "Введите описание задачи:")
+    bot.register_next_step_handler(message, process_task_description, title)
+def process_task_description(message, title):
+    description = message.text
+    bot.send_message(message.chat.id, "Введите дату выполнения задачи (в формате ГГГГ-ММ-ДД):")
+    bot.register_next_step_handler(message, process_task_due_date, title, description)
+def process_task_due_date(message, title, description):
+    due_date_str = message.text
+    try:
+        due_date = datetime.datetime.strptime(due_date_str, '%Y-%m-%d').date()
+        bot.send_message(message.chat.id, "Задача создана!")
+        db_sqlite.insert_task(message.chat.id, title, description, due_date) 
+    except ValueError:
+        bot.send_message(message.chat.id, "Неверный формат даты. Пожалуйста, введите дату в формате ГГГГ-ММ-ДД.") 
+
 @bot.message_handler(commands=['user_info'])
 def main(message):
     bot.send_message(message.chat.id, message)
 
-# @bot.message_handler()
-# def info(message):
+@bot.message_handler()
+def info(message):
+    global time
+    if message.text.lower() == 'время':
+        now = datetime.datetime.now()
+        time = now.strftime('%H:%M:%S')
+        bot.reply_to(message, f'Текущее время: {time}')
+    elif message.text.lower() == 'id':
+        bot.reply_to(message, f'Ваш ID: {message.from_user.id}')
+    # Дополнительные команды можно добавить здесь
+    else:
+        bot.reply_to(message, "Я не понимаю эту команду")
 #     if message.text.lower() == 'id':
 #         bot.reply_to(message, f'ID = {message.from_user.id}')
 #     elif message.text.lower() == 'время':

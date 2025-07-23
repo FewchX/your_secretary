@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 # Путь к базе данных
-db_path = os.path.join('db', 'db/database.db')
+db_path = os.path.join('db', 'database.db')
 
 def create_tables():
     # Создаем соединение и курсор внутри функции
@@ -38,6 +38,7 @@ def create_tables():
     
     db.commit()
     db.close()
+
 
 def insert_user(telegram_id, name):
     # Создаем соединение и курсор внутри функции
@@ -116,4 +117,4 @@ def delete_category(category_id):
     db.close()
 
 # Вызываем функцию создания таблиц один раз при запуске программы
-create_tables()
+#create_tables()
