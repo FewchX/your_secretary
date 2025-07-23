@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 import datetime
 import pytz
+from db import db_sqlite
 
 #testrt
 
@@ -14,6 +15,8 @@ def main(message):
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton('Выбрать временной пояс', callback_data='choose_timezone'))
 
+    db_sqlite.insert_user(message.chat.id, message.from_user.first_name)
+
     bot.send_message(message.chat.id, f'Здравствуйте, {message.from_user.first_name}! Давайте начнём наше общение с настройки. Укажите свой временной пояс, для того, чтобы я могла ориентироваться в вашем списке дел!', reply_markup=markup)
 
 @bot.message_handler(commands=['user_info'])
@@ -22,9 +25,7 @@ def main(message):
 
 @bot.message_handler()
 def info(message):
-    if message.text.lower() == 'привет':
-        bot.send_message(message.chat.id, f'Привет, {message.from_user.first_name}!')
-    elif message.text.lower() == 'id':
+    if message.text.lower() == 'id':
         bot.reply_to(message, f'ID = {message.from_user.id}')
     elif message.text.lower() == 'время':
         bot.reply_to(message, f'время = {time}')
