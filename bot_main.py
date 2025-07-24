@@ -18,4 +18,4 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, SystemExit):
         print("Bot Stopped. \nMessage - Папочка, я сделала что-то не так? Прости меня!")
     except Exception as e:
-        print(f"Ошибочка :(\n{e}")
+        print(f"Обшибка{e}")
