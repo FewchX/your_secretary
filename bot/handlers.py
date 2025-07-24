@@ -29,7 +29,7 @@ async def send_welcome(message: Message):
 
 @router.message(F.text == 'Создать задачу')
 async def create_task_command(message: Message, mode):
-    if mode == 0:
+    if mode !=1:
         await message.answer("Расскажите о задаче, которую хотите создать.")
     elif mode == 1:
         await message.answer("Поняла, создаю задачу...")
@@ -41,7 +41,7 @@ async def create_task_command(message: Message, mode):
 
 @router.message(F.text == 'Мои задачи')
 async def my_tasks_command(message: Message, mode):
-    if mode == 0:
+    if mode !=1:
         await message.answer("Вот список ваших задач:")
         pass
     elif mode == 1:
@@ -54,7 +54,7 @@ async def my_tasks_command(message: Message, mode):
 
 @router.message(F.text == 'Изменить задачу')
 async def edit_task_command(message: Message, mode):
-    if mode == 0:
+    if mode !=1:
         await message.answer("Какую задачу вы хотите изменить?")
     elif mode == 1:
         await message.answer("Поняла, изменяю задачу...")
@@ -66,7 +66,7 @@ async def edit_task_command(message: Message, mode):
 
 @router.message(F.text == 'Удалить задачу')
 async def delete_task_command(message: Message, mode):
-    if mode == 0:
+    if mode !=1:
         await message.answer("Какую задачу вы хотите удалить?")
     elif mode == 1:
         await message.answer("Поняла, удаляю задачу...")
@@ -79,7 +79,7 @@ async def delete_task_command(message: Message, mode):
 
 @router.message(F.text == 'Выбрать часовой пояс')
 async def select_timezone_command(message: Message, mode):
-    if mode == 0:
+    if mode !=1:
         await message.answer("Пожалуйста, выберите ваш часовой пояс из списка ниже:", reply_markup=kb.timezone_keyboard)
     elif mode == 1:
         await message.answer("Поняла, настраиваю часовой пояс...")

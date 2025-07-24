@@ -2,6 +2,7 @@
 import google.generativeai as genai
 import json
 from . import m_prompts
+import re
 
 class Manager:
     def __init__(self, api_key: str):
@@ -20,10 +21,12 @@ class Manager:
             # Отправляем промпт модели и получаем ответ
             response = self.model.generate_content(prompt)
             # Извлекаем текст ответа
+            #print(f"Response from model: {response}")
             response_text = response.text
+            response_text = re.sub(r"^```json\s*|\s*```$", "", response_text.strip())
             # Пытаемся распарсить JSON
             action_data = json.loads(response_text)
-            return action_data.get("action", "unknown")
+            return action_data.get("action")
         except Exception as e:
             print(f"Ошибка при анализе сообщения менеджером: {e}")
             return "unknown"
