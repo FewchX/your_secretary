@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
 
-from db import db_sqlite
+#from db import db_sqlite
 
 from gemini_bot import manager
 from gemini_bot import secretary
@@ -14,7 +14,7 @@ router = Router()
 
 @router.message(Command('start'))
 async def send_welcome(message: Message):
-    db_sqlite.insert_user(message.chat.id, message.from_user.first_name)
+    #db_sqlite.insert_user(message.chat.id, message.from_user.first_name)
     await message.answer(f"Здравстуйте, {message.from_user.first_name}! Давайте познакомимся, я ваша новая секретутка с искусственным интеллектом. Для вашего удобства я создала несколько кнопок быстрого доступа, но они не обязательны. Вы можете общаться со мной как с настоящим человеком, а я самостоятельно пойму какой тип задачи (Создание напоминания, просмотр своих напоминаний) вы мне отправили.\n\nДавайте начнём с выбора вашего временного пояса, чтобы я могла вовремя отправлять вам напоминания!", reply_markup=kb.main)
 
 
