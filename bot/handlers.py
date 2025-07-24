@@ -1,11 +1,20 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
+import os
 
 #from db import db_sqlite
 
-from gemini_bot import manager
-from gemini_bot import secretary
+# в handlers.py или где-то в инициализации
+from gemini_bot.manager import Manager
+from gemini_bot.secretary import Secretary
+
+# Предполагается, что API_KEY доступен, например, из переменных окружения
+
+
+API_KEY = os.getenv('GEMINI_API_KEY')
+manager = Manager(api_key=API_KEY)
+secretary = Secretary(api_key=API_KEY)
 
 import bot.keyboards as kb
 
