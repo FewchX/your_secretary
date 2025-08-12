@@ -16,10 +16,8 @@ class Secretary:
             prompt = prepare_prompt_by_type(task, chat_id, text)
             print(f"Processing task '{task}' for chat {chat_id} with prompt: {prompt}")
             response = self.model.generate_content(prompt)
-            print(56)
             print("Raw model response:", response.text)
             reply, sql_command = self.analyze_response(response.text)
-            print(f"Analyzed response - Reply: {reply}, SQL Command: {sql_command}")
             if sql_command:
                 # Выполняем SQL-команду
                 print(f"Executing SQL command: {sql_command}")
@@ -45,7 +43,6 @@ class Secretary:
             response_json = json.loads(cleaned)
             reply = response_json.get("reply", "")
             sql_command = response_json.get("sql", "")
-            print(f"Response JSON: {response_json}")
             return reply, sql_command
         except json.JSONDecodeError as e:
             print("JSON decode error:", e)
@@ -54,12 +51,9 @@ class Secretary:
     def analyze_message(self, message_text, chat_id):
         try:
             prompt = prepare_prompt_by_type('detect_action', chat_id, message_text)
-            print(1)
             response = self.model.generate_content(prompt)
-            print(3)
             action_type = response.text.strip()
             print("Action type detected:", action_type)
-            print(4)
             if action_type:
                 return action_type
             else:
