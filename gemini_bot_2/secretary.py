@@ -1,7 +1,7 @@
 import json
 import google.generativeai as genai
 
-from gemini_bot.prompt_skripts import prepare_prompt_by_type
+from gemini_bot_2.prompt_skripts import prepare_prompt_by_type
 from db import db_sqlite
 from db.db_sqlite import db_path
 

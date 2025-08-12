@@ -4,7 +4,7 @@ from aiogram.filters import Command
 import os
 
 from db import db_sqlite
-from gemini_bot.secretary import Secretary
+from gemini_bot_2.secretary import Secretary
 import bot.keyboards as kb
 
 API_KEY = os.getenv('GEMINI_API_KEY')

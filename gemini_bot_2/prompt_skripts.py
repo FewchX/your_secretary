@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 from db import db_sqlite
-from gemini_bot.s_prompts import PROMPTS
+from gemini_bot_2.s_prompts import PROMPTS
 
 
 def format_tasks_for_prompt(tasks):
