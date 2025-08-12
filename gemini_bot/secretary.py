@@ -3,6 +3,7 @@ import google.generativeai as genai
 
 from gemini_bot.prompt_skripts import prepare_prompt_by_type
 from db import db_sqlite
+from db.db_sqlite import db_path
 
 
 class Secretary:
@@ -16,11 +17,15 @@ class Secretary:
             print(f"Processing task '{task}' for chat {chat_id} with prompt: {prompt}")
             response = self.model.generate_content(prompt)
             print(56)
+            print("Raw model response:", response.text)
             reply, sql_command = self.analyze_response(response.text)
             print(f"Analyzed response - Reply: {reply}, SQL Command: {sql_command}")
             if sql_command:
                 # Выполняем SQL-команду
-                db_sqlite.execute_sql(sql_command)
+                print(f"Executing SQL command: {sql_command}")
+                db_sqlite.execute_sql_command(sql_command)
+                print("SQL command executed successfully.")
+
                 return reply
             else:
                 return "Не удалось сформировать SQL-команду для выполнения."
@@ -29,15 +34,21 @@ class Secretary:
             return "Произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже."
 
     def analyze_response(self, response_text):
-        """Анализирует ответ от модели и возвращает SQL-команду и ответ пользователю."""
         try:
-            print(217)
-            response_json = json.loads(response_text)
+            # Убираем обёртки ```json ... ```
+            cleaned = response_text.strip()
+            if cleaned.startswith("```json"):
+                cleaned = cleaned[len("```json"):].strip()
+            if cleaned.endswith("```"):
+                cleaned = cleaned[:-3].strip()
+
+            response_json = json.loads(cleaned)
             reply = response_json.get("reply", "")
             sql_command = response_json.get("sql", "")
             print(f"Response JSON: {response_json}")
             return reply, sql_command
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
+            print("JSON decode error:", e)
             return "Ошибка обработки ответа от модели."
     
     def analyze_message(self, message_text, chat_id):

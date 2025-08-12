@@ -92,5 +92,12 @@ def get_user_id_by_telegram_id(telegram_id):
     
     return user_id[0] if user_id else None
 
+def execute_sql_command(sql_command):
+    db = sqlite3.connect(db_path)
+    cursor = db.cursor()
+    cursor.execute(sql_command)
+    db.commit()
+    db.close()
+
 # Вызываем функцию создания таблиц один раз при запуске программы
 create_tables()
